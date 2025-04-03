@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Owner - Stock Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #343a40;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            table, th, td {
+                font-size: 14px;
+            }
+
+            button {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bar Owner - Stock Management</h1>
+
+    <h2>Current Stock</h2>
+    <table id="stockTable">
+        <thead>
+            <tr>
+                <th>Drink</th>
+                <th>Price (NGN)</th>
+                <th>Stock Remaining</th>
+                <th>Total Sold</th>
+                <th>Restock Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Star Beer</td>
+                <td id="starBeerPrice">₦1000</td>
+                <td id="starBeerRemaining">100</td>
+                <td id="starBeerSold">0</td>
+                <td><input type="number" id="starBeerRestock" min="1" value="0"></td>
+                <td><button onclick="restock('starBeer')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Heineken</td>
+                <td id="heinekenPrice">₦1200</td>
+                <td id="heinekenRemaining">100</td>
+                <td id="heinekenSold">0</td>
+                <td><input type="number" id="heinekenRestock" min="1" value="0"></td>
+                <td><button onclick="restock('heineken')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Guinness</td>
+                <td id="guinnessPrice">₦1000</td>
+                <td id="guinnessRemaining">100</td>
+                <td id="guinnessSold">0</td>
+                <td><input type="number" id="guinnessRestock" min="1" value="0"></td>
+                <td><button onclick="restock('guinness')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Fanta</td>
+                <td id="fantaPrice">₦300</td>
+                <td id="fantaRemaining">100</td>
+                <td id="fantaSold">0</td>
+                <td><input type="number" id="fantaRestock" min="1" value="0"></td>
+                <td><button onclick="restock('fanta')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Coke</td>
+                <td id="cokePrice">₦300</td>
+                <td id="cokeRemaining">100</td>
+                <td id="cokeSold">0</td>
+                <td><input type="number" id="cokeRestock" min="1" value="0"></td>
+                <td><button onclick="restock('coke')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Maltina</td>
+                <td id="maltinaPrice">₦500</td>
+                <td id="maltinaRemaining">100</td>
+                <td id="maltinaSold">0</td>
+                <td><input type="number" id="maltinaRestock" min="1" value="0"></td>
+                <td><button onclick="restock('maltina')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>La Casera</td>
+                <td id="laCaseraPrice">₦300</td>
+                <td id="laCaseraRemaining">100</td>
+                <td id="laCaseraSold">0</td>
+                <td><input type="number" id="laCaseraRestock" min="1" value="0"></td>
+                <td><button onclick="restock('laCasera')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Amstel Malta</td>
+                <td id="amstelMaltaPrice">₦350</td>
+                <td id="amstelMaltaRemaining">100</td>
+                <td id="amstelMaltaSold">0</td>
+                <td><input type="number" id="amstelMaltaRestock" min="1" value="0"></td>
+                <td><button onclick="restock('amstelMalta')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Soda</td>
+                <td id="sodaPrice">₦150</td>
+                <td id="sodaRemaining">100</td>
+                <td id="sodaSold">0</td>
+                <td><input type="number" id="sodaRestock" min="1" value="0"></td>
+                <td><button onclick="restock('soda')">Restock</button></td>
+            </tr>
+            <tr>
+                <td>Pepsi</td>
+                <td id="pepsiPrice">₦250</td>
+                <td id="pepsiRemaining">100</td>
+                <td id="pepsiSold">0</td>
+                <td><input type="number" id="pepsiRestock" min="1" value="0"></td>
+                <td><button onclick="restock('pepsi')">Restock</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Price Updates</h2>
+    <table id="priceUpdateTable">
+        <thead>
+            <tr>
+                <th>Drink</th>
+                <th>New Price (NGN)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Star Beer</td>
+                <td><input type="text" id="starBeerNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('starBeer')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Heineken</td>
+                <td><input type="text" id="heinekenNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('heineken')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Guinness</td>
+                <td><input type="text" id="guinnessNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('guinness')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Fanta</td>
+                <td><input type="text" id="fantaNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('fanta')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Coke</td>
+                <td><input type="text" id="cokeNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('coke')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Maltina</td>
+                <td><input type="text" id="maltinaNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('maltina')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>La Casera</td>
+                <td><input type="text" id="laCaseraNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('laCasera')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Amstel Malta</td>
+                <td><input type="text" id="amstelMaltaNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('amstelMalta')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Soda</td>
+                <td><input type="text" id="sodaNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('soda')">Update Price</button></td>
+            </tr>
+            <tr>
+                <td>Pepsi</td>
+                <td><input type="text" id="pepsiNewPrice" placeholder="New Price"></td>
+                <td><button onclick="updatePrice('pepsi')">Update Price</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Generate Daily Sales Report</h2>
+    <button onclick="generateDailySalesReport()">Generate Daily Sales Report</button>
+
+    <script>
+        // Function to restock drinks
+        function restock(drink) {
+            const restockInput = document.getElementById(`${drink}Restock`);
+            const restockQuantity = parseInt(restockInput.value);
+            let currentStock = parseInt(document.getElementById(`${drink}Remaining`).innerText);
+
+            if (restockQuantity > 0) {
+                const newStock = currentStock + restockQuantity;
+                document.getElementById(`${drink}Remaining`).innerText = newStock;
+
+                // Update localStorage
+                let stockData = JSON.parse(localStorage.getItem('stockData')) || {};
+                stockData[drink].stock = newStock;
+                localStorage.setItem('stockData', JSON.stringify(stockData));
+
+                alert(`${restockQuantity} ${drink.charAt(0).toUpperCase() + drink.slice(1)} restocked!`);
+                restockInput.value = 0; // Reset input
+            } else {
+                alert('Please enter a valid quantity to restock.');
+            }
+        }
+
+        // Function to update the price of drinks
+        function updatePrice(drink) {
+            const newPriceInput = document.getElementById(`${drink}NewPrice`);
+            const newPrice = parseFloat(newPriceInput.value);
+
+            if (newPrice > 0) {
+                document.getElementById(`${drink}Price`).innerText = `₦${newPrice}`;
+
+                // Update localStorage
+                let stockData = JSON.parse(localStorage.getItem('stockData')) || {};
+                stockData[drink].price = newPrice;
+                localStorage.setItem('stockData', JSON.stringify(stockData));
+
+                alert(`Price for ${drink.charAt(0).toUpperCase() + drink.slice(1)} updated to ₦${newPrice}!`);
+                newPriceInput.value = ''; // Reset input
+            } else {
+                alert('Please enter a valid price.');
+            }
+        }
+
+        // Generate daily sales report
+        function generateDailySalesReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text('Daily Sales Report', 20, 10);
+
+            const drinks = ['starBeer', 'heineken', 'guinness', 'fanta', 'coke', 'maltina', 'laCasera', 'amstelMalta', 'soda', 'pepsi'];
+            let y = 30;
+
+            drinks.forEach(drink => {
+                const sold = document.getElementById(`${drink}Sold`).innerText;
+                const price = document.getElementById(`${drink}Price`).innerText;
+                doc.text(`${drink.charAt(0).toUpperCase() + drink.slice(1)}: Sold ${sold} at ${price}`, 20, y);
+                y += 10;
+            });
+
+            doc.save('daily_sales_report.pdf');
+        }
+
+        // Load stock data from localStorage when the page is loaded
+        window.onload = function() {
+            const stockData = JSON.parse(localStorage.getItem('stockData')) || {};
+
+            if (Object.keys(stockData).length === 0) {
+                const defaultStock = {
+                    starBeer: { stock: 100, sold: 0, price: 1000 },
+                    heineken: { stock: 100, sold: 0, price: 1200 },
+                    guinness: { stock: 100, sold: 0, price: 1000 },
+                    fanta: { stock: 100, sold: 0, price: 300 },
+                    coke: { stock: 100, sold: 0, price: 300 },
+                    maltina: { stock: 100, sold: 0, price: 500 },
+                    laCasera: { stock: 100, sold: 0, price: 300 },
+                    amstelMalta: { stock: 100, sold: 0, price: 350 },
+                    soda: { stock: 100, sold: 0, price: 150 },
+                    pepsi: { stock: 100, sold: 0, price: 250 }
+                };
+                localStorage.setItem('stockData', JSON.stringify(defaultStock));
+            } else {
+                for (let drink of Object.keys(stockData)) {
+                    const { stock, sold, price } = stockData[drink];
+                    document.getElementById(`${drink}Remaining`).innerText = stock;
+                    document.getElementById(`${drink}Sold`).innerText = sold;
+                    document.getElementById(`${drink}Price`).innerText = `₦${price}`;
+                }
+            }
+        };
+    </script>
+</body>
+</html>
